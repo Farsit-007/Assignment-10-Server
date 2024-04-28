@@ -32,7 +32,26 @@ async function run() {
         const itemCollection = client.db("ItemsDB").collection("items")
         const SubCategoryCollection = client.db("ItemsDB").collection("category")
 
-        
+        app.get('/items', async (req, res) => {
+            const cursor = itemCollection.find();
+            const result = await cursor.toArray();
+            res.send(result)
+        })
+        app.get('/mycraft/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email }
+            const result = await itemCollection.find(query).toArray();
+            res.send(result)
+        })
+
+        app.get('/singlecraft/:id',async(req,res)=>{
+            const id = req.params.id;
+            console.log(id);
+            const query = {_id : new ObjectId(id)}
+            const result = await itemCollection.findOne(query);
+            console.log(result);
+            res.send(result)
+        })
         app.put('/singlecraft/:id',async(req,res)=>{
             const id = req.params.id;
             const item = req.body;
@@ -70,8 +89,14 @@ async function run() {
             res.send(result)
         })
 
-       
+        app.delete('/delete/:id',async(req,res)=>{
+            const id = req.params.id;
+            const query = {_id: new ObjectId(id)};
+            const result = await itemCollection.deleteOne(query)
+            res.send(result);
+        })
 
+        
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
