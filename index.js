@@ -33,6 +33,35 @@ async function run() {
         const SubCategoryCollection = client.db("ItemsDB").collection("category")
 
         
+        app.put('/singlecraft/:id',async(req,res)=>{
+            const id = req.params.id;
+            const item = req.body;
+            const query = {_id : new ObjectId(id)}
+            const updateItem = {
+                $set : {
+                    item_name : item.item_name,
+                    image : item.image,
+                    category : item.category,
+                    processing_time : item.processing_time,
+                    price : item.price,
+                    rating : item.rating,
+                    customization : item.customization,
+                    stock_status : item.stock_status,
+                    description : item.description
+                }
+            }
+            const result = await itemCollection.updateOne(query,updateItem);
+            res.send(result)
+        })
+
+        app.get('/items/:id',async(req,res)=>{
+            const id = req.params.id;
+            console.log(id);
+            const query = {_id : new ObjectId(id)}
+            const result = await itemCollection.findOne(query);
+            console.log(result);
+            res.send(result)
+        })
 
         app.post('/items', async (req, res) => {
             const item = req.body;
@@ -41,7 +70,7 @@ async function run() {
             res.send(result)
         })
 
-        
+       
 
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
