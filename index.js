@@ -101,7 +101,13 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result)
         })
-        
+        app.get('/category/:category', async (req, res) => {
+            const category = req.params.category;
+            const query = { category : category }
+            const result = await itemCollection.find(query).toArray();
+            res.send(result)
+            console.log(result);
+        })
 
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
