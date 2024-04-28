@@ -106,7 +106,6 @@ async function run() {
             const query = { category : category }
             const result = await itemCollection.find(query).toArray();
             res.send(result)
-            console.log(result);
         })
 
         // Send a ping to confirm a successful connection
