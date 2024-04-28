@@ -9,12 +9,11 @@ app.use(cors())
 app.use(express.json())
 
 
-//robayatfarsit
-//GzxR2zqCjaFrWbWw
+
 
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}.iap8jv9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.iap8jv9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -46,7 +45,6 @@ async function run() {
 
         app.get('/singlecraft/:id',async(req,res)=>{
             const id = req.params.id;
-            console.log(id);
             const query = {_id : new ObjectId(id)}
             const result = await itemCollection.findOne(query);
             console.log(result);
@@ -82,7 +80,6 @@ async function run() {
 
         app.post('/items', async (req, res) => {
             const item = req.body;
-            console.log(item);
             const result = await itemCollection.insertOne(item)
             res.send(result)
         })
@@ -104,6 +101,7 @@ async function run() {
             const query = { category : category }
             const result = await itemCollection.find(query).toArray();
             res.send(result)
+            console.log(result);
         })
 
         // Send a ping to confirm a successful connection
